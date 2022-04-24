@@ -7,16 +7,32 @@ async def post(payload: NoteSchema):
     return await database.execute(query=query)
 
 
-async def get_by_id(id: int):
+async def get(id: int):
     query = notes.select().where(id == notes.c.id)
     return await database.fetch_one(query=query)
 
 
+'''
 async def get_by_name(title: str):
     query = notes.select().where(id == notes.c.title)
     return await database.fetch_one(query=query)
+'''
 
 
 async def get_all():
     query = notes.select()
     return await database.fetch_all(query=query)
+
+
+async def put(id: int, payload: NoteSchema):
+    query = (
+        notes.update().where(id == notes.c.id)
+        .values(title=payload.title, description=payload.description)
+        .returning(notes.c.id)
+    )
+    return await database.execute(query=query)
+
+
+async def delete(id: int):
+    query = notes.delete().where(id == notes.c.id)
+    return await database.execute(query=query)
