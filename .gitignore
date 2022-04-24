@@ -81,3 +81,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Postgres data
+db/data/

@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   web:
+    image: python:3.9.10-alpine
     build: ./src
     command: |
       bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000'
@@ -14,14 +15,20 @@ services:
 
   db:
     image: postgres:13-alpine
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
+    build: ./db
     expose:
       - 5432
     environment:
-      - POSTGRES_USER=worker
-      - POSTGRES_PASSWORD=worker_password
-      - POSTGRES_DB=working_db
+      POSTGRES_USER: "worker"
+      POSTGRES_PASSWORD: "worker_password"
+      POSTGRES_DB: "working_db"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+      LC_ALL: "ru_RU.UTF-8"
+      LC_COLLATE: "ru_RU.UTF-8"
+      LC_CTYPE: "ru_RU.UTF-8"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      - ./db/data:/var/lib/postgresql/data/
 
 volumes:
-  postgres_data:
+    postgres_data:
