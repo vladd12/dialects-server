@@ -18,6 +18,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 # SQLAlchemy
 engine = create_engine(DATABASE_URL)
 metadata = MetaData()
+
 notes = Table(
     "notes",
     metadata,
