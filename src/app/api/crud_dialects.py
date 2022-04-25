@@ -44,6 +44,12 @@ async def get_all_relationships():
     return await database.fetch_all(query=query)
 
 
+# Get all relationships by region's id
+async def get_all_relationships_by_region_id(id_region: int):
+    query = relationships.select().where(id_region == relationships.c.region_id)
+    return await database.fetch_all(query=query)
+
+
 # Update dialect by id
 async def put_by_id(id: int, payload: DialectSchema):
     query = (
