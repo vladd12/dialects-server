@@ -11,8 +11,8 @@ class NoteDB(NoteSchema):
 
 
 class RegionSchema(BaseModel):
-    title: str = Field(..., min_length=10, max_length=70)
+    title: str = Field(..., min_length=5, max_length=70)
 
 
-class RegionDB(NoteSchema):
+class RegionDB(RegionSchema):
     id: int
