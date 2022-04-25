@@ -8,3 +8,11 @@ class NoteSchema(BaseModel):
 
 class NoteDB(NoteSchema):
     id: int
+
+
+class RegionSchema(BaseModel):
+    title: str = Field(..., min_length=10, max_length=70)
+
+
+class RegionDB(NoteSchema):
+    id: int
