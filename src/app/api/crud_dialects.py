@@ -42,3 +42,35 @@ async def get_all_dialects():
 async def get_all_relationships():
     query = relationships.select()
     return await database.fetch_all(query=query)
+
+
+# Update dialect by id
+async def put_by_id(id: int, payload: DialectSchema):
+    query = (
+        dialects.update().where(id == dialects.c.id)
+        .values(title=payload.title)
+        .returning(dialects.c.id)
+    )
+    return await database.execute(query=query)
+
+
+# Update dialect by id
+async def put_by_name(title: str, payload: DialectSchema):
+    query = (
+        dialects.update().where(title == dialects.c.title)
+        .values(title=payload.title)
+        .returning(dialects.c.id)
+    )
+    return await database.execute(query=query)
+
+
+# Delete dialect by id
+async def delete_by_id(id: int):
+    query = dialects.delete().where(id == dialects.c.id)
+    return await database.execute(query=query)
+
+
+# Delete dialect by name
+async def delete_by_name(title: str):
+    query = dialects.delete().where(title == dialects.c.title)
+    return await database.execute(query=query)

@@ -57,7 +57,7 @@ async def update_region_by_id(payload: RegionSchema, id: int = Path(..., gt=0),)
     return response_object
 
 
-# Update region by id
+# Update region by name
 @router.put("/named/{title}/", response_model=RegionDB)
 async def update_region_by_name(payload: RegionSchema, title: str):
     region = await crud_regions.get_by_name(title)

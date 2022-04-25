@@ -56,4 +56,3 @@ async def delete_by_id(id: int):
 async def delete_by_name(title: str):
     query = regions.delete().where(title == regions.c.title)
     return await database.execute(query=query)
-

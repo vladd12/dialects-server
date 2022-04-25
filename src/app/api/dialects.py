@@ -76,7 +76,7 @@ async def create_dialect_by_name(payload: DialectSchema, title: str):
 async def get_dialect_by_id(id: int = Path(..., gt=0),):
     dialect = await crud_dialects.get_by_id(id)
     if not dialect:
-        raise HTTPException(status_code=404, detail="Note not found")
+        raise HTTPException(status_code=404, detail="Dialect not found")
     return dialect
 
 
@@ -85,7 +85,7 @@ async def get_dialect_by_id(id: int = Path(..., gt=0),):
 async def get_dialect_by_name(title: str):
     dialect = await crud_dialects.get_by_name(title)
     if not dialect:
-        raise HTTPException(status_code=404, detail="Note not found")
+        raise HTTPException(status_code=404, detail="Dialect not found")
     return dialect
 
 
@@ -100,3 +100,56 @@ async def get_all_dialects():
 async def get_all_relationships():
     return await crud_dialects.get_all_relationships()
 
+
+# Update dialect by id
+@router.put("/{id}/", response_model=DialectDB)
+async def update_dialect_by_id(payload: DialectSchema, id: int = Path(..., gt=0),):
+    dialect = await crud_dialects.get_by_id(id)
+    if not dialect:
+        raise HTTPException(status_code=404, detail="Dialect not found")
+
+    dialect_id = await crud_dialects.put_by_id(id, payload)
+    response_object = {
+        "id": dialect_id,
+        "title": payload.title,
+        "description": payload.description,
+    }
+    return response_object
+
+
+# Update dialect by name
+@router.put("/named/{title}/", response_model=DialectDB)
+async def update_dialect_by_name(payload: DialectSchema, title: str):
+    dialect = await crud_dialects.get_by_name(title)
+    if not dialect:
+        raise HTTPException(status_code=404, detail="Dialect not found")
+
+    dialect_id = await crud_dialects.put_by_name(title, payload)
+    response_object = {
+        "id": dialect_id,
+        "title": payload.title,
+        "description": payload.description,
+    }
+    return response_object
+
+
+# Delete dialect by id
+@router.delete("/{id}/", response_model=DialectDB)
+async def delete_dialect_by_id(id: int = Path(..., gt=0),):
+    dialect = await crud_dialects.get_by_id(id)
+    if not dialect:
+        raise HTTPException(status_code=404, detail="Dialect not found")
+
+    await crud_dialects.delete_by_id(id)
+    return dialect
+
+
+# Delete dialect by name
+@router.delete("/named/{title}/", response_model=DialectDB)
+async def delete_dialect_by_name(title: str):
+    dialect = await crud_dialects.get_by_name(title)
+    if not dialect:
+        raise HTTPException(status_code=404, detail="Dialect not found")
+
+    await crud_dialects.delete_by_name(title)
+    return dialect
