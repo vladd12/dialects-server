@@ -16,3 +16,12 @@ class RegionSchema(BaseModel):
 
 class RegionDB(RegionSchema):
     id: int
+
+
+class DialectSchema(BaseModel):
+    title: str = Field(..., min_length=3, max_length=50)
+    description: str = Field(..., min_length=10, max_length=200)
+
+
+class DialectDB(DialectSchema):
+    id: int

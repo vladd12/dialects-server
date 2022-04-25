@@ -79,7 +79,7 @@ def test_update_region(test_app, monkeypatch):
     async def mock_put(id, payload):
         return 1
 
-    monkeypatch.setattr(crud_regions, "put", mock_put)
+    monkeypatch.setattr(crud_regions, "put_by_id", mock_put)
     response = test_app.put("/regions/1/", data=json.dumps(test_update_data))
     assert response.status_code == 200
     assert response.json() == test_update_data

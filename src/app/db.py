@@ -43,7 +43,7 @@ dialects = Table(
     "dialects",
     metadata,
     Column("id", Integer, unique=True, primary_key=True),
-    Column("title", String(70), unique=True, nullable=False),
+    Column("title", String(50), unique=True, nullable=False),
     Column("description", String(200), nullable=False),
 )
 
