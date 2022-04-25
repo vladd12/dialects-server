@@ -11,7 +11,7 @@ services:
     ports:
       - 8002:8000
     environment:
-      - DATABASE_URL=postgresql://worker:worker_password@db/working_db
+      - DATABASE_URL=postgresql://worker:$N7TOxwt83~%N{~m@db/app_db
 
   db:
     image: postgres:13-alpine
@@ -20,8 +20,8 @@ services:
       - 5432
     environment:
       POSTGRES_USER: "worker"
-      POSTGRES_PASSWORD: "worker_password"
-      POSTGRES_DB: "working_db"
+      POSTGRES_PASSWORD: "$N7TOxwt83~%N{~m"
+      POSTGRES_DB: "app_db"
       PGDATA: "/var/lib/postgresql/data/pgdata"
       LC_ALL: "ru_RU.UTF-8"
       LC_COLLATE: "ru_RU.UTF-8"
