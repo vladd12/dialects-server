@@ -25,3 +25,8 @@ class DialectSchema(BaseModel):
 
 class DialectDB(DialectSchema):
     id: int
+
+
+class RelationshipDB(BaseModel):
+    region_id: int
+    dialect_id: int

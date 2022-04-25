@@ -46,7 +46,7 @@ def test_get_region_incorrect_id(test_app, monkeypatch):
     monkeypatch.setattr(crud_regions, "get_by_id", mock_get)
     response = test_app.get("/regions/999")
     assert response.status_code == 404
-    assert response.json()["detail"] == "Note not found"
+    assert response.json()["detail"] == "Region not found"
     response = test_app.get("/regions/0")
     assert response.status_code == 422
 
@@ -129,6 +129,6 @@ def test_remove_region_incorrect_id(test_app, monkeypatch):
     monkeypatch.setattr(crud_regions, "get_by_id", mock_get)
     response = test_app.delete("/regions/999/")
     assert response.status_code == 404
-    assert response.json()["detail"] == "Note not found"
+    assert response.json()["detail"] == "Region not found"
     response = test_app.delete("/regions/0/")
     assert response.status_code == 422

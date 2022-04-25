@@ -23,7 +23,7 @@ async def create_region(payload: RegionSchema):
 async def get_region_by_id(id: int = Path(..., gt=0),):
     region = await crud_regions.get_by_id(id)
     if not region:
-        raise HTTPException(status_code=404, detail="Note not found")
+        raise HTTPException(status_code=404, detail="Region not found")
     return region
 
 
@@ -32,7 +32,7 @@ async def get_region_by_id(id: int = Path(..., gt=0),):
 async def get_region_by_name(title: str):
     region = await crud_regions.get_by_name(title)
     if not region:
-        raise HTTPException(status_code=404, detail="Note not found")
+        raise HTTPException(status_code=404, detail="Region not found")
     return region
 
 
@@ -47,7 +47,7 @@ async def get_all_regions():
 async def update_region_by_id(payload: RegionSchema, id: int = Path(..., gt=0),):
     region = await crud_regions.get_by_id(id)
     if not region:
-        raise HTTPException(status_code=404, detail="Note not found")
+        raise HTTPException(status_code=404, detail="Region not found")
 
     region_id = await crud_regions.put_by_id(id, payload)
     response_object = {
@@ -62,7 +62,7 @@ async def update_region_by_id(payload: RegionSchema, id: int = Path(..., gt=0),)
 async def update_region_by_name(payload: RegionSchema, title: str):
     region = await crud_regions.get_by_name(title)
     if not region:
-        raise HTTPException(status_code=404, detail="Note not found")
+        raise HTTPException(status_code=404, detail="Region not found")
 
     region_id = await crud_regions.put_by_name(title, payload)
     response_object = {
@@ -77,7 +77,7 @@ async def update_region_by_name(payload: RegionSchema, title: str):
 async def delete_region_by_id(id: int = Path(..., gt=0),):
     region = await crud_regions.get_by_id(id)
     if not region:
-        raise HTTPException(status_code=404, detail="Note not found")
+        raise HTTPException(status_code=404, detail="Region not found")
 
     await crud_regions.delete_by_id(id)
     return region
@@ -88,7 +88,7 @@ async def delete_region_by_id(id: int = Path(..., gt=0),):
 async def delete_region_by_name(title: str):
     region = await crud_regions.get_by_name(title)
     if not region:
-        raise HTTPException(status_code=404, detail="Note not found")
+        raise HTTPException(status_code=404, detail="Region not found")
 
     await crud_regions.delete_by_name(title)
     return region

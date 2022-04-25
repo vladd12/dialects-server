@@ -15,8 +15,30 @@ async def get_by_name(title: str):
 
 
 # Add dialect in table
-async def post(payload: DialectSchema):
-    query = dialects.insert().values(title=payload.title, description = payload.description)
+async def post_dialect(payload: DialectSchema):
+    query = dialects.insert().values(title=payload.title, description=payload.description)
     return await database.execute(query=query)
 
 
+# Add relationship in table
+async def post_relationship(id_region: int, id_dialect: int):
+    query = relationships.insert().values(region_id=id_region, dialect_id=id_dialect)
+    return await database.execute(query=query)
+
+
+# Get relationship by IDs
+async def get_relationship(id_region: int, id_dialect: int):
+    query = relationships.select().where(id_region == dialects.c.region_id and id_dialect == dialects.c.dialect_id)
+    return await database.fetch_one(query=query)
+
+
+# Get all dialects from table
+async def get_all_dialects():
+    query = dialects.select()
+    return await database.fetch_all(query=query)
+
+
+# Get all relationships from table
+async def get_all_relationships():
+    query = relationships.select()
+    return await database.fetch_all(query=query)
