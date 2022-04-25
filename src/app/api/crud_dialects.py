@@ -28,7 +28,7 @@ async def post_relationship(id_region: int, id_dialect: int):
 
 # Get relationship by IDs
 async def get_relationship(id_region: int, id_dialect: int):
-    query = relationships.select().where(id_region == dialects.c.region_id and id_dialect == dialects.c.dialect_id)
+    query = relationships.select().where(id_region == relationships.c.region_id).where(id_dialect == relationships.c.dialect_id)
     return await database.fetch_one(query=query)
 
 

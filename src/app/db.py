@@ -51,8 +51,8 @@ dialects = Table(
 relationships = Table(
     "relationships",
     metadata,
-    Column("region_id", Integer, ForeignKey('regions.id', ondelete='CASCADE'), nullable=False, index=True),
-    Column("dialect_id", Integer, ForeignKey('dialects.id', ondelete='CASCADE'), nullable=False, index=True),
+    Column("region_id", Integer, ForeignKey("regions.id", ondelete="CASCADE"), nullable=False, index=True),
+    Column("dialect_id", Integer, ForeignKey("dialects.id", ondelete="CASCADE"), nullable=False, index=True),
 )
 
 # Databases query builder
