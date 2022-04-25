@@ -28,7 +28,7 @@ async def get_region_by_id(id: int = Path(..., gt=0),):
 
 
 # Get region by name
-@router.get("/{title}/", response_model=RegionDB)
+@router.get("/named/{title}/", response_model=RegionDB)
 async def get_region_by_name(title: str):
     region = await crud_regions.get_by_name(title)
     if not region:
@@ -44,12 +44,27 @@ async def get_all_regions():
 
 # Update region by id
 @router.put("/{id}/", response_model=RegionDB)
-async def update_region(payload: RegionSchema, id: int = Path(..., gt=0),):
+async def update_region_by_id(payload: RegionSchema, id: int = Path(..., gt=0),):
     region = await crud_regions.get_by_id(id)
     if not region:
         raise HTTPException(status_code=404, detail="Note not found")
 
-    region_id = await crud_regions.put(id, payload)
+    region_id = await crud_regions.put_by_id(id, payload)
+    response_object = {
+        "id": region_id,
+        "title": payload.title,
+    }
+    return response_object
+
+
+# Update region by id
+@router.put("/named/{title}/", response_model=RegionDB)
+async def update_region_by_name(payload: RegionSchema, title: str):
+    region = await crud_regions.get_by_name(title)
+    if not region:
+        raise HTTPException(status_code=404, detail="Note not found")
+
+    region_id = await crud_regions.put_by_name(title, payload)
     response_object = {
         "id": region_id,
         "title": payload.title,
@@ -69,7 +84,7 @@ async def delete_region_by_id(id: int = Path(..., gt=0),):
 
 
 # Delete region by name
-@router.delete("/{title}/", response_model=RegionDB)
+@router.delete("/named/{title}/", response_model=RegionDB)
 async def delete_region_by_name(title: str):
     region = await crud_regions.get_by_name(title)
     if not region:

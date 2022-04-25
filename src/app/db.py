@@ -8,6 +8,7 @@ from sqlalchemy import (
     MetaData,
     String,
     Table,
+    ForeignKey,
     create_engine
 )
 from sqlalchemy.sql import func
@@ -33,8 +34,25 @@ notes = Table(
 regions = Table(
     "regions",
     metadata,
-    Column("id", Integer, primary_key=True),
-    Column("title", String(70), nullable=False),
+    Column("id", Integer, unique=True, primary_key=True),
+    Column("title", String(70), unique=True, nullable=False),
+)
+
+# Dialects table in db
+dialects = Table(
+    "dialects",
+    metadata,
+    Column("id", Integer, unique=True, primary_key=True),
+    Column("title", String(70), unique=True, nullable=False),
+    Column("description", String(200), nullable=False),
+)
+
+# Dialects table in db
+relationships = Table(
+    "relationships",
+    metadata,
+    Column("region_id", Integer, ForeignKey('regions.id', ondelete='CASCADE'), nullable=False, index=True),
+    Column("dialect_id", Integer, ForeignKey('dialects.id', ondelete='CASCADE'), nullable=False, index=True),
 )
 
 # Databases query builder

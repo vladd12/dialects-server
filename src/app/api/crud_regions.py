@@ -27,9 +27,19 @@ async def get_all():
 
 
 # Update region by id
-async def put(id: int, payload: RegionSchema):
+async def put_by_id(id: int, payload: RegionSchema):
     query = (
         regions.update().where(id == regions.c.id)
+        .values(title=payload.title)
+        .returning(regions.c.id)
+    )
+    return await database.execute(query=query)
+
+
+# Update region by id
+async def put_by_name(title: str, payload: RegionSchema):
+    query = (
+        regions.update().where(title == regions.c.title)
         .values(title=payload.title)
         .returning(regions.c.id)
     )
