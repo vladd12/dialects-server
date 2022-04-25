@@ -20,16 +20,6 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 engine = create_engine(DATABASE_URL)
 metadata = MetaData()
 
-# Notes table in db
-notes = Table(
-    "notes",
-    metadata,
-    Column("id", Integer, primary_key=True),
-    Column("title", String(50)),
-    Column("description", String(50)),
-    Column("created_date", DateTime, default=func.now(), nullable=False),
-)
-
 # Regions table in db
 regions = Table(
     "regions",
