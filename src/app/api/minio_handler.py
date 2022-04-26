@@ -1,5 +1,6 @@
 import random
 import os
+from io import BytesIO
 from datetime import timedelta
 from fastapi import HTTPException
 from minio import Minio
@@ -51,12 +52,12 @@ class MinioHandler():
 
 
     # Put file in bucket
-    def put_object(self, file_data, file_name, content_type):
+    def put_file(self, file_name, file):
         result = self.client.put_object(
             bucket_name=self.bucket_name,
             object_name=file_name,
-            data=file_data,
-            content_type=content_type,
+            data=BytesIO(file.file.read()),
+            content_type=file.content_type,
             length=-1,
             part_size=10 * 1024 * 1024
         )
@@ -67,7 +68,19 @@ class MinioHandler():
         }
         return data_file
 
-    #
-    def get_object(self, file_name):
-        result = self.client.get_object(bucket_name=self.bucket_name, object_name=file_name)
-        return result.read()
+
+    # Returns file from bucket
+    def get_file(self, file_name):
+        result = self.client.get_object(self.bucket_name, file_name)
+        return BytesIO(result.read())
+
+
+    # Remove file from bucket
+    def remove_file(self, file_name):
+        self.client.remove_object(self.bucket_name, file_name)
+
+
+    # Update file in bucket (remove old, put new)
+    def update_file(self, file_name, file):
+        self.remove_file(file_name)
+        self.put_file(file_name, file)

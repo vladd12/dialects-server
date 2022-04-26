@@ -1,22 +1,17 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, UploadFile
 from starlette.responses import StreamingResponse
-from io import BytesIO
 
 from app.api.minio_handler import MinioHandler
 
 # Base method for uploading files
-async def upload_file(file, id):
+async def upload_file(file: UploadFile, id: int):
     file_name = str(id)
     minio_client = MinioHandler().get_instance()
     if minio_client.check_file_exists(file_name=file_name):
         raise HTTPException(status_code=400, detail="File already exists")
     
     try:
-        data_file = minio_client.put_object(
-            file_name=file_name,
-            file_data=BytesIO(file.file.read()),
-            content_type=file.content_type
-        )
+        data_file = minio_client.put_file(file_name, file)
         return data_file
     except Exception as e:
         raise HTTPException(status_code=400, detail="Can't connect to Minio")
@@ -30,8 +25,8 @@ async def download_file(id: int):
         if not minio_client.check_file_exists(file_name):
             raise HTTPException(status_code=404, detail="File not found")
 
-        file = minio_client.get_object(file_name)
-        return StreamingResponse(BytesIO(file))
+        file = minio_client.get_file(file_name)
+        return StreamingResponse(file)
     except Exception as e:
         raise HTTPException(status_code=400, detail="Can't connect to Minio")
 
