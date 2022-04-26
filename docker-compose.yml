@@ -3,6 +3,7 @@ version: '3.8'
 services:
   web:
     image: python:3.9.10-alpine
+    container_name: web
     build: ./src
     command: |
       bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000'
@@ -11,16 +12,18 @@ services:
     ports:
       - 8002:8000
     environment:
-      - DATABASE_URL=postgresql://worker:$N7TOxwt83~%N{~m@db/app_db
+      - DATABASE_URL=postgresql://worker:N7TOxwt83~%N{~m@db/app_db
 
   db:
+    restart: always
     image: postgres:13-alpine
+    container_name: db
     build: ./db
     expose:
       - 5432
     environment:
       POSTGRES_USER: "worker"
-      POSTGRES_PASSWORD: "$N7TOxwt83~%N{~m"
+      POSTGRES_PASSWORD: "N7TOxwt83~%N{~m"
       POSTGRES_DB: "app_db"
       PGDATA: "/var/lib/postgresql/data/pgdata"
       LC_ALL: "ru_RU.UTF-8"
@@ -29,6 +32,40 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
       - ./db/data:/var/lib/postgresql/data/
+
+  storage:
+    restart: always
+    image: minio/minio:latest
+    container_name: storage
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+    environment:
+      MINIO_ROOT_USER: "root"
+      MINIO_ROOT_PASSWORD: "WGE4ER{gKj{a#3A"
+    command: |
+      server --address ":9000" --console-address ":9090" /data
+    volumes:
+      - ./minio/data:/data
+      - ./minio/config:/root/.minio
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  createbuckets:
+    image: minio/mc:latest
+    container_name: createbuckets
+    depends_on:
+      - s3
+    entrypoint: >
+      /bin/sh -c
+      "sleep 10;
+      /usr/bin/mc config host add storage http://storage:9000 root WGE4ER{gKj{a#3A;
+      /usr/bin/mc mb storage/mlcm;
+      sleep 999;
+      exit 0;"
 
 volumes:
     postgres_data:

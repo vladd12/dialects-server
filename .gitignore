@@ -84,3 +84,7 @@ dmypy.json
 
 # Postgres data
 db/data/
+
+# Minio data
+minio/config/
+minio/data/
