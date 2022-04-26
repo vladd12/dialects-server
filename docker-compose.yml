@@ -12,7 +12,10 @@ services:
     ports:
       - 8002:8000
     environment:
-      - DATABASE_URL=postgresql://worker:N7TOxwt83~%N{~m@db/app_db
+      - DATABASE_URL=postgresql://worker:N7TOxwt83Nm@db/app_db
+      - MINIO_USR=root
+      - MINIO_PSWD=WGE4ER{gKj{a#3A
+      - MINIO_BUCKET=mlcm
 
   db:
     restart: always
@@ -23,7 +26,7 @@ services:
       - 5432
     environment:
       POSTGRES_USER: "worker"
-      POSTGRES_PASSWORD: "N7TOxwt83~%N{~m"
+      POSTGRES_PASSWORD: "N7TOxwt83Nm"
       POSTGRES_DB: "app_db"
       PGDATA: "/var/lib/postgresql/data/pgdata"
       LC_ALL: "ru_RU.UTF-8"
@@ -53,19 +56,6 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
-
-  createbuckets:
-    image: minio/mc:latest
-    container_name: createbuckets
-    depends_on:
-      - s3
-    entrypoint: >
-      /bin/sh -c
-      "sleep 10;
-      /usr/bin/mc config host add storage http://storage:9000 root WGE4ER{gKj{a#3A;
-      /usr/bin/mc mb storage/mlcm;
-      sleep 999;
-      exit 0;"
 
 volumes:
     postgres_data:
