@@ -41,17 +41,6 @@ class MinioHandler():
         return self.bucket_name
 
 
-    # Get file from bucket
-    def presigned_get_file(self, file_name: str):
-        # Request URL expired after one day
-        url = self.client.presigned_get_file(
-            bucket_name=self.bucket_name,
-            object_name=file_name,
-            expires=timedelta(days=1)
-        )
-        return url
-
-
     # Checking if file exists in bucket
     def check_file_exists(self, file_name):
         try:
@@ -72,11 +61,9 @@ class MinioHandler():
             part_size=10 * 1024 * 1024
         )
         
-        url = self.presigned_get_file(file_name)
         data_file = {
             'bucket_name': self.bucket_name,
             'file_name': file_name,
-            'url': url
         }
         return data_file
 

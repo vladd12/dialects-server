@@ -12,7 +12,6 @@ async def upload_file(file, id):
         raise HTTPException(status_code=400, detail="File already exists")
     
     try:
-        print(file_name)
         data_file = minio_client.put_object(
             file_name=file_name,
             file_data=BytesIO(file.file.read()),

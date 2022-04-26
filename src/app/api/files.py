@@ -7,7 +7,7 @@ router = APIRouter()
 
 
 # Upload file by region id
-@router.post("/minio/upload/{id}", response_model=UploadFileResponse)
+@router.post("/upload/{id}", response_model=UploadFileResponse)
 async def upload_file_by_region_id(file: UploadFile = File(...), id: int = Path(..., gt=0),):
     region = await crud_regions.get_by_id(id)
     if not region:
@@ -17,7 +17,7 @@ async def upload_file_by_region_id(file: UploadFile = File(...), id: int = Path(
 
 
 # Upload file by region name
-@router.post("/minio/upload/named/{title}", response_model=UploadFileResponse)
+@router.post("/upload/named/{title}", response_model=UploadFileResponse)
 async def upload_file_by_region_name(title: str, file: UploadFile = File(...)):
     region = await crud_regions.get_by_name(title)
     if not region:
@@ -28,7 +28,7 @@ async def upload_file_by_region_name(title: str, file: UploadFile = File(...)):
 
 
 # Download file by region id
-@router.get("/minio/download/{id}")
+@router.get("/download/{id}")
 async def download_file_by_region_id(id: int = Path(..., gt=0),):
     region = await crud_regions.get_by_id(id)
     if not region:
@@ -38,7 +38,7 @@ async def download_file_by_region_id(id: int = Path(..., gt=0),):
 
 
 # Download file by region name
-@router.get("/minio/download/named/{title}")
+@router.get("/download/named/{title}")
 async def download_file_by_region_name(title: str):
     region = await crud_regions.get_by_name(title)
     if not region:
