@@ -134,7 +134,7 @@ async def delete_region_by_id(id: int = Path(..., gt=0),):
         raise HTTPException(status_code=404, detail="Region not found")
 
     await crud_regions.delete_by_id(id)
-    #await crud_files.remove_file(id)
+    await crud_files.remove_file(id)
     return region
 
 
