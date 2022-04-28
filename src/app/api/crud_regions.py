@@ -3,8 +3,8 @@ from app.db import regions, database
 
 
 # Add region in table
-async def post(payload: RegionSchema):
-    query = regions.insert().values(title=payload.title)
+async def post(title: str):
+    query = regions.insert().values(title=title)
     return await database.execute(query=query)
 
 
@@ -36,23 +36,7 @@ async def put_by_id(id: int, payload: RegionSchema):
     return await database.execute(query=query)
 
 
-# Update region by id
-async def put_by_name(title: str, payload: RegionSchema):
-    query = (
-        regions.update().where(title == regions.c.title)
-        .values(title=payload.title)
-        .returning(regions.c.id)
-    )
-    return await database.execute(query=query)
-
-
 # Delete region by id
 async def delete_by_id(id: int):
     query = regions.delete().where(id == regions.c.id)
-    return await database.execute(query=query)
-
-
-# Delete region by name
-async def delete_by_name(title: str):
-    query = regions.delete().where(title == regions.c.title)
     return await database.execute(query=query)
