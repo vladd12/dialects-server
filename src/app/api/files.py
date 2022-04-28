@@ -78,20 +78,20 @@ async def remove_file_by_region_name(title: str):
 
 # Update file by region id
 @router.put("/{id}")
-async def update_file_by_region_id(id: int = Path(..., gt=0),):
+async def update_file_by_region_id(id: int = Path(..., gt=0), file: UploadFile = File(...)):
     region = await crud_regions.get_by_id(id)
     if not region:
         raise HTTPException(status_code=404, detail="Region not found")
 
-    return await crud_files.remove_file(id)
+    return await crud_files.update_file(id, file)
 
 
 # Update file by region name
 @router.put("/named/{title}")
-async def update_file_by_region_name(title: str):
+async def update_file_by_region_name(title: str, file: UploadFile = File(...)):
     region = await crud_regions.get_by_name(title)
     if not region:
         raise HTTPException(status_code=404, detail="Region not found")
 
     region_id = list(region.values())[0]
-    return await crud_files.remove_file(region_id)
+    return await crud_files.update_file(region_id, file)

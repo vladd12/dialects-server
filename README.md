@@ -4,4 +4,5 @@ Server for region's dialects project
 
 ## Stack
 **Backend:** FastAPI </br>
-**Database:** PostgreSQL + SQLAlchemy
+**Database:** PostgreSQL + SQLAlchemy </br>
+**File storage:** Minio

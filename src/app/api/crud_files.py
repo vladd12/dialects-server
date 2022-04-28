@@ -47,7 +47,7 @@ async def remove_file(id: int):
 
 
 # Base method for updating files
-async def update_file(file: UploadFile, id: int):
+async def update_file(id: int, file: UploadFile):
     file_name = str(id)
     minio_client = MinioHandler().get_instance()
     if not minio_client.check_file_exists(file_name):
@@ -58,6 +58,7 @@ async def update_file(file: UploadFile, id: int):
         return data_file
     except Exception as e:
         raise HTTPException(status_code=400, detail="Can't connect to Minio")
+
 
 # Get list about names and buckets of all files
 async def get_list_files():
