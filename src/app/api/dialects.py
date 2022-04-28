@@ -8,9 +8,9 @@ router = APIRouter()
 
 
 # Add dialect in table by region id
-@router.post("/{id}/", response_model=DialectDB, status_code=201)
-async def create_dialect_by_id(payload: DialectSchema, id: int = Path(..., gt=0),):
-    region = await crud_regions.get_by_id(id)
+@router.post("/{region_id}/", response_model=DialectDB, status_code=201)
+async def create_dialect_by_id(payload: DialectSchema, region_id: int = Path(..., gt=0),):
+    region = await crud_regions.get_by_id(region_id)
     if not region:
         raise HTTPException(status_code=404, detail="Region not found")
     
@@ -40,9 +40,9 @@ async def create_dialect_by_id(payload: DialectSchema, id: int = Path(..., gt=0)
 
 
 # Add dialect in table by region name
-@router.post("/named/{title}/", response_model=DialectDB, status_code=201)
-async def create_dialect_by_name(payload: DialectSchema, title: str):
-    region = await crud_regions.get_by_name(title)
+@router.post("/named/{region_name}/", response_model=DialectDB, status_code=201)
+async def create_dialect_by_name(payload: DialectSchema, region_name: str):
+    region = await crud_regions.get_by_name(region_name)
     if not region:
         raise HTTPException(status_code=404, detail="Region not found")
 
@@ -102,13 +102,13 @@ async def get_all_relationships():
 
 
 # Get all dialects by region id
-@router.get("/d/all/region-id/{id}", response_model=List[DialectDB])
-async def get_all_dialects_by_region_id(id: int = Path(..., gt=0),):
-    region = await crud_regions.get_by_id(id)
+@router.get("/d/all/region-id/{region_id}", response_model=List[DialectDB])
+async def get_all_dialects_by_region_id(region_id: int = Path(..., gt=0),):
+    region = await crud_regions.get_by_id(region_id)
     if not region:
         raise HTTPException(status_code=404, detail="Region not found")
 
-    relationships = await crud_dialects.get_all_relationships_by_region_id(id)
+    relationships = await crud_dialects.get_all_relationships_by_region_id(region_id)
     dialects = []
     for relationship in relationships:
         dialect_id = list(relationship.values())[1]
@@ -121,9 +121,9 @@ async def get_all_dialects_by_region_id(id: int = Path(..., gt=0),):
 
 
 # Get all dialects by region name
-@router.get("/d/all/region-name/{title}", response_model=List[DialectDB])
-async def get_all_dialects_by_region_name(title: str):
-    region = await crud_regions.get_by_name(title)
+@router.get("/d/all/region-name/{region_name}", response_model=List[DialectDB])
+async def get_all_dialects_by_region_name(region_name: str):
+    region = await crud_regions.get_by_name(region_name)
     if not region:
         raise HTTPException(status_code=404, detail="Region not found")
     

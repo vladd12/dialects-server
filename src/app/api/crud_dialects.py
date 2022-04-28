@@ -3,14 +3,14 @@ from app.db import dialects, relationships, database
 
 
 # Get dialect by id
-async def get_by_id(id: int):
-    query = dialects.select().where(id == dialects.c.id)
+async def get_by_id(id_region: int):
+    query = dialects.select().where(id_region == dialects.c.id)
     return await database.fetch_one(query=query)
 
 
 # Get dialect by name
-async def get_by_name(title: str):
-    query = dialects.select().where(title == dialects.c.title)
+async def get_by_name(region_name: str):
+    query = dialects.select().where(region_name == dialects.c.title)
     return await database.fetch_one(query=query)
 
 

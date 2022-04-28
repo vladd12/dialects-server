@@ -1,4 +1,3 @@
-import random
 import os
 from io import BytesIO
 from datetime import timedelta
@@ -83,4 +82,9 @@ class MinioHandler():
     # Update file in bucket (remove old, put new)
     def update_file(self, file_name, file):
         self.remove_file(file_name)
-        self.put_file(file_name, file)
+        return self.put_file(file_name, file)
+
+
+    # Return all files in bucket
+    def get_all_files(self):
+        return self.client.list_objects(self.bucket_name)
