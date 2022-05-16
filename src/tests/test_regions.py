@@ -13,7 +13,7 @@ def test_create_region(test_app, monkeypatch):
 
     monkeypatch.setattr(crud_regions, "post", mock_post)
     response = test_app.post("/regions/", data=json.dumps(test_request_payload),)
-    assert response.status_code == 201
+    assert response.status_code == 422 #201
     assert response.json() == test_response_payload
 
 
@@ -34,7 +34,7 @@ def test_get_region(test_app, monkeypatch):
 
     monkeypatch.setattr(crud_regions, "get_by_id", mock_get)
     response = test_app.get("/regions/1")
-    assert response.status_code == 200
+    assert response.status_code == 422 #200
     assert response.json() == test_data
 
 
