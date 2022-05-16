@@ -6,3 +6,5 @@ Server for region's dialects project
 **Backend:** FastAPI </br>
 **Database:** PostgreSQL + SQLAlchemy </br>
 **File storage:** Minio
+
+## Test
