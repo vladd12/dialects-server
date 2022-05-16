@@ -2,6 +2,9 @@ name: CI
 on:
   push:
 
+env:
+  DATABASE_URL: postgresql://worker:N7TOxwt83Nm@db/app_db
+
 jobs:
   test:
     runs-on: ubuntu-latest
