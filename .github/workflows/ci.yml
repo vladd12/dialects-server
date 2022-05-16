@@ -3,14 +3,14 @@ on:
   push:
 
 env:
-  DATABASE_URL: 'postgresql://worker:N7TOxwt83Nm@db/app_db'
+  DATABASE_URL: 'postgresql://worker:N7TOxwt83Nm@postgres:5432/app_db'
 
 jobs:
   test:
     runs-on: ubuntu-latest
     
     services:
-      postgresql:
+      postgres:
         image: postgres:13-alpine
         env:
           POSTGRES_USER: 'worker'
