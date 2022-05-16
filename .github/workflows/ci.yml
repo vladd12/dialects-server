@@ -8,6 +8,18 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
+    
+    services:
+      postgresql:
+        image: postgres:13-alpine
+        env:
+          POSTGRES_USER: 'worker'
+          POSTGRES_PASSWORD: 'N7TOxwt83Nm'
+          POSTGRES_DB: 'app_db'
+          PGDATA: '/var/lib/postgresql/data/pgdata'
+        expose:
+          - 5432
+    
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v3
