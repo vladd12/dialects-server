@@ -1,7 +1,6 @@
 name: CI
 on:
   push:
-  pull-request:
 
 jobs:
   test:
